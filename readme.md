@@ -1,40 +1,15 @@
 # Self-Attentive Neural Collaborative Filtering
 
-This is the official implementation of our paper "Self-Attentive Neural Collaborative Filtering" (https://arxiv.org/abs/1806.06446). This repository contains the scripts, models and datasets to reproduce the results in our paper.
+This is the official implementation of our paper "*Self-Attentive Neural Collaborative Filtering* - Yi Tay, Shuai Zhang, Luu Anh Tuan and Siu Cheung Hui" (https://arxiv.org/abs/1806.06446).
+
+This repository contains the scripts, models and datasets to reproduce the results in our paper.
 
 # Dependencies
 
 1. Tensorflow 1.7
 2. Python 2.7
-3. TQDM
+3. TQDM (for nice progress bars)
 4. Numpy, Scikit-Learn etc.
-
-# Usage
-
-In `./prep/` we provide the script to generate the datasets preprocessing yourself. We also loaded the env file onto dropbox for your convenience. You can download it via the following command, which will place the required environment in the `./datasets` folder.
-
-```
-bash ./setup/setup_yelp18.sh
-```
-
-After which, you may train SA-NCF model with 20 layers via the following command.
-
-```
-python train_cr.py --dataset yelp18 --rnn_type RANK_SANCF --opt Adam --lr 1e-3 --l2_reg 1e-8 --batch-size 512 --emb_size 64 --num_neg 2 --num_dense 20
-```
-
-To compare with an ablative MLP model with 20 layers, you can run:
-
-```
-python train_cr.py --dataset yelp18 --rnn_type RANK_MLP --opt Adam --lr 1e-3 --l2_reg 1e-8 --batch-size 512 --emb_size 64 --num_neg 2 --num_dense 20
-```
-
-You should be able to reproduce **similar** results to the paper (though not exactly due to some extent of non-deterministicism).
-
-
-### Some notes on model calling
-
-This repository works on a language based control of the model architecture. So by appending or pre-pending things to `--rnn_type` we can toggle different models. In general, the arg `rnn_type` controls the model. For example, to test a tower MLP you can use the command `RANK_MLP_TOWER`. By default, all models optimize the BPR loss, you can switch to the hinge loss by adding a `HINGE` at rnn_type.
 
 # Reference and Citation
 
@@ -59,11 +34,39 @@ If you find our codes useful and/or use it in your research, please consider cit
 }
 ```
 
-# Sample Output
+# Usage
+
+In `./prep/` we provide the script to generate the datasets preprocessing yourself. We also loaded the env file onto dropbox for your convenience. You can download it via the following command, which will place the required environment in the `./datasets` folder.
+
+```
+bash ./setup/setup_yelp18.sh
+```
+
+After which, you may train SA-NCF model with 20 layers via the following command.
+
+```
+python train_cr.py --dataset yelp18 --rnn_type RANK_SANCF --opt Adam --lr 1e-3 --l2_reg 1e-8 --batch-size 512 --emb_size 64 --num_neg 2 --num_dense 20
+```
+
+To compare with an ablative MLP model with 20 layers, you can run:
+
+```
+python train_cr.py --dataset yelp18 --rnn_type RANK_MLP --opt Adam --lr 1e-3 --l2_reg 1e-8 --batch-size 512 --emb_size 64 --num_neg 2 --num_dense 20
+```
+
+You should be able to reproduce **similar** results to the paper (though not exactly due to some extent of non-deterministicism).
+
+For dropbox url files for the other datasets, you can send a request to my email.
+
+### Some notes on model calling
+
+This repository works on a language based control of the model architecture. So by appending or pre-pending things to `--rnn_type` we can toggle different models. In general, the arg `rnn_type` controls the model. For example, to test a tower MLP you can use the command `RANK_MLP_TOWER`. By default, all models optimize the BPR loss, you can switch to the hinge loss by adding a `HINGE` at rnn_type.
+
+### Sample Output
 
 Sample output of running RANK_SANCF. (This was an independent run from the experiments conducted in the paper, you should get similar, though not identical result).
 
-Note: We observe that sometimes, when training SA-NCF, the prediction goes haywire/overfits after x epochs. However, best epoch reports the exact epoch when the best dev score is reported and so it is the one that is reported in the paper.
+Note: We observe that sometimes, when training SA-NCF, the prediction goes haywire/overfits after x epochs. However, best epoch reports the exact epoch when the best dev score is recorded and so it is the one that is reported in the paper.
 
 ```
 ===============================
@@ -187,3 +190,7 @@ Maxed epoch=20
 [max] HR10=0.965288806207
 [max] ACC=0.3469758156
 ```
+
+## Contact
+
+For questions, please email me at ytay017@e.ntu.edu.sg.
